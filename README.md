@@ -16,4 +16,4 @@ Dieses Konzept stellt die Interaktion/Kommunikation eines Fahrzeugs mit einer Sm
 
 ## Sequence Diagram
 
-![sequenceDiagram(sequence_chart.PNG)
+![sequenceDiagram(sequence_diagram.jpg)
