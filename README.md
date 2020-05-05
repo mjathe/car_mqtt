@@ -17,3 +17,12 @@ Dieses Konzept stellt die Interaktion/Kommunikation eines Fahrzeugs mit einer Sm
 ## Sequence Diagram
 
 ![sequenceDiagram](UML/sequence_diagram.jpg)
+
+## Most Popular Broker
+###Local
+- Mosquitto
+
+###Online
+- cloudMQTT
+- IBM Bluemix
+- Google
