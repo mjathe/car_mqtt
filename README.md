@@ -14,11 +14,14 @@ Dieses Konzept stellt die Interaktion/Kommunikation eines Fahrzeugs mit einer Sm
 
 
 
-## Sequence Diagram
+## Sequence diagram
 
 ![sequenceDiagram](UML/sequence_diagram.jpg)
 
-## Most Popular Broker
+## use case diagram
+
+![useCaseDiagram](UML/use_case_diagram.jpg)
+## Most popular broker
 ###Local
 - Mosquitto
 
