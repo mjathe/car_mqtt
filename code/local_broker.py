@@ -21,12 +21,14 @@ def on_connect_local(client, userdata, flags, rc):
 
 def on_message_local(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
+    #store all incoming data FR A.1
     data.append(str(msg.payload))
 
 #online client methods
 def on_connect_online(client, userdata, flags, rc):
     global connected
     client_o.subscribe(("hshl/car", 2))
+    #detect disconnections FRA
     if int(str(rc)) == 0:
         print("Connected to onlinebroker established")
         connected = 1
@@ -58,6 +60,7 @@ client_l.loop_start()
 client_o.loop_start()
 while True:
     if connected:
+        #send collected data FR D
         client_o.publish("hshl/car", json.dumps(data))
         data = []
         time.sleep(8)
