@@ -10,14 +10,14 @@ broker = subprocess.Popen("D:\Sciebo\STUDIUM\Bachelorarbeit\mosquitto\mosquitto 
 print("Broker auf port "+brokerport+" gestartet.")
 
 
-connected =0
-
+connected =1
+id ="car1"
 data =[]
 
 #local client methods
 def on_connect_local(client, userdata, flags, rc):
     print("Connected to localbroker with rc:"+str(rc))
-    client_l.subscribe(("hshl/car/sensor", 2))
+    client_l.subscribe(("/hshl/car/sensor", 2))
 
 def on_message_local(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
@@ -27,7 +27,13 @@ def on_message_local(client, userdata, msg):
 #online client methods
 def on_connect_online(client, userdata, flags, rc):
     global connected
-    client_o.subscribe(("hshl/car", 2))
+    global id
+    print("Connected to onlinebroker with rc:"+str(rc))
+    #client_o.subscribe(("hshl/car", 2))
+    client_o.subscribe("/hshl/users/", 2)
+    client_o.subscribe("/hshl/users/car1",2)
+    client_o.publish("/hshl/users/","Klaus 0,0 None car1" )
+
     #detect disconnections FRA
     if int(str(rc)) == 0:
         print("Connected to onlinebroker established")
@@ -37,6 +43,7 @@ def on_connect_online(client, userdata, flags, rc):
         connected = 0
 
 def on_message_online(client, userdata, msg):
+    print(msg.topic+" "+str(msg.payload))
     js = json.loads(msg.payload)
     print(js)
 
@@ -61,7 +68,7 @@ client_o.loop_start()
 while True:
     if connected:
         #send collected data FR D
-        client_o.publish("hshl/car", json.dumps(data))
+        client_o.publish("/hshl/users/car1", json.dumps(data))
         data = []
         time.sleep(8)
     else:
