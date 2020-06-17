@@ -4,7 +4,7 @@ import time
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
-    client.subscribe(("/hshl/car/sensor", 2))
+    client.subscribe(("/car/airbag", 2))
 
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
@@ -18,4 +18,5 @@ client.connect("localhost", 1882, 60)
 client.loop_start()
 while True:
     time.sleep(3)
-    client.publish("/hshl/car/sensor", str(randint(0,100)))
+    if randint(0, 100) >90:
+        client.publish("/car/airbag", "accident")
