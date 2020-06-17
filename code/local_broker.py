@@ -14,19 +14,19 @@ connected =1
 
 id ="1564654"
 name="Michael"
-location=["22.2296756","28.0122287"]
+location=[22.2296756,28.0122287]
 def request(reasons):
     call = {
         "driver_name": name,
-        "location": location, #Array mit Koordinaten als Strings
+        "location": location, #Array mit Koordinaten als floats
         "reasons": reasons, #Array mit reasons als Strings
-        "topic": "/hshl/users/"+id
+        "id": id
         }
     client_o.publish("/hshl/users/"+id, json.dumps(call))
 def register():
     reg = {
         "driver_name": name,
-        "location": location, #Array mit Koordinaten als Strings
+        "location": location, #Array mit Koordinaten als floats
         "reasons": "None",
         "id": id
         }
@@ -40,7 +40,7 @@ def on_connect_local(client, userdata, flags, rc):
 def on_message_local(client, userdata, msg):
     if str(msg.topic) == "/car/airbag":
         #client_o.publish("/hshl/users/"+id, name+" 22.2296756,28.0122287 accident "+id)
-        request(["accident"])
+        request("accident")
         print("Accident!"+msg.topic+" "+str(msg.payload))
     #store all incoming data FR A.1
     else:

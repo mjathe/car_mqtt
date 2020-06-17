@@ -18,5 +18,5 @@ client.connect("localhost", 1882, 60)
 client.loop_start()
 while True:
     time.sleep(3)
-    if randint(0, 100) >90:
+    if randint(0, 100) >50:
         client.publish("/car/airbag", "accident")
