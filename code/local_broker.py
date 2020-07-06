@@ -10,11 +10,11 @@ broker = subprocess.Popen("D:\Sciebo\STUDIUM\Bachelorarbeit\mosquitto\mosquitto 
 print("Broker auf port "+brokerport+" gestartet.")
 
 data =[]
-connected =1
-
+connected = 1
 id ="1564654"
 name="Michael"
-location=[22.2296756,28.0122287]
+location=[22.0,28.0]
+
 def request(reasons):
     call = {
         "driver_name": name,
@@ -37,12 +37,17 @@ def on_connect_local(client, userdata, flags, rc):
     print("Connected to localbroker with rc:"+str(rc))
     client_l.subscribe(("/car/temp", 2))
     client_l.subscribe(("/car/airbag", 2))
+    client_l.subscribe(("/car/gps", 2))
 def on_message_local(client, userdata, msg):
+    global location
     if str(msg.topic) == "/car/airbag":
         #client_o.publish("/hshl/users/"+id, name+" 22.2296756,28.0122287 accident "+id)
-        request("accident")
-        print("Accident!"+msg.topic+" "+str(msg.payload))
-    #store all incoming data FR A.1
+        request(msg.payload.decode())
+        #print("Accident!"+msg.topic+" "+str(msg.payload))
+        #store all incoming data FR A.1
+    elif str(msg.topic) == "/car/gps":
+        location = json.loads(msg.payload)
+        #print(location)
     else:
         print("new temperature"+msg.topic+" "+str(msg.payload))
         data.append(str(msg.payload))
@@ -51,6 +56,7 @@ def on_message_local(client, userdata, msg):
 def on_connect_online(client, userdata, flags, rc):
     global connected
     global id
+    location
     print("Connected to onlinebroker with rc:"+str(rc))
 
     client_o.subscribe("/hshl/users/", 2)
