@@ -12,7 +12,7 @@ print("Broker on port "+brokerport+" started.")
 data =[]
 connected = 1
 
-id ="1564654"
+id ="IchBinEineID"
 name="Michael"
 location=[0,0]
 
@@ -55,7 +55,7 @@ def on_message_local(client, userdata, msg):
         location = json.loads(msg.payload)
 
     else:
-        print("new temperature"+msg.topic+" "+str(msg.payload))
+        print("new temperature"+msg.topic+": "+str(msg.payload))
         #store all incoming data FR A.1
         data.append(str(msg.payload))
 
@@ -68,6 +68,7 @@ def on_connect_online(client, userdata, flags, rc):
 
     client_o.subscribe("/hshl/users/", 2)
     client_o.subscribe("/hshl/users/"+id,2)
+    client_o.subscribe("/hshl/", 2)
 
     register()
     client_o.unsubcribe("/hshl/users/")
@@ -121,8 +122,10 @@ client_o.loop_start()
 while True:
     if connected:
         #send collected data FR D
-        client_o.publish("/hshl/users/"+id+"/data", json.dumps(data))
-        time.sleep(8)
+        if data!=[]:
+            client_o.publish("/hshl/users/"+id+"/data", json.dumps(data))
+            time.sleep(8)
+            data = []
     else:
         print("no connection to onlinebroker")
         time.sleep(1)
